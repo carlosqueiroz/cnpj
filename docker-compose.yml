@@ -36,9 +36,3 @@ services:
       DB_NAME: Dados_RFB
     networks:
       - cnpj_network
-
-volumes:
-  postgres_data:  # Volume definido aqui
-
-networks:
-  cnpj_network:
