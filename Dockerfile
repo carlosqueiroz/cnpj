@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /usr/src/app
 
 # Copia o arquivo de requisitos para o container
-COPY code/requirements.txt ./
+COPY requirements.txt ./
 
 # Instala as dependências do Python
 RUN pip install --no-cache-dir -r requirements.txt
