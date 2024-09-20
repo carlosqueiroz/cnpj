@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: postgres_container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: Dados_RFB
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./banco_de_dados.sql:/docker-entrypoint-initdb.d/banco_de_dados.sql
+    networks:
+      - cnpj_network
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python_container
+    volumes:
+      - ./code:/usr/src/app
+      - ./output:/usr/src/app/output
+      - ./extracted:/usr/src/app/extracted
+    depends_on:
+      - db
+    environment:
+      OUTPUT_FILES_PATH: /usr/src/app/output
+      EXTRACTED_FILES_PATH: /usr/src/app/extracted
+      DB_USER: postgres
+      DB_PASSWORD: password
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: Dados_RFB
+    networks:
+      - cnpj_network
+
+volumes:
+  postgres_data:
+
+networks:
+  cnpj_network:
